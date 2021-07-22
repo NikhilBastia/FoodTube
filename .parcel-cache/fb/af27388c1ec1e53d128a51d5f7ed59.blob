@@ -1,0 +1,71 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _stable = require("core-js/stable");
+var _runtime = require("regenerator-runtime/runtime");
+var _model = require("./model");
+var _recipeView = require("./views/recipeView");
+var _recipeViewDefault = parcelHelpers.interopDefault(_recipeView);
+var _searchView = require("./views/searchView");
+var _searchViewDefault = parcelHelpers.interopDefault(_searchView);
+var _resultView = require("./views/resultView");
+var _resultViewDefault = parcelHelpers.interopDefault(_resultView);
+var _paginationView = require("./views/paginationView");
+var _paginationViewDefault = parcelHelpers.interopDefault(_paginationView);
+const recipeContainer = document.querySelector('.recipe');
+if (module.hot) module.hot.accept();
+// https://forkify-api.herokuapp.com/v2
+///////////////////////////////////////
+const showRecipe = async function() {
+    try {
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        console.log(id);
+        _resultViewDefault.default.render(_model.getSearchResults());
+        //Render loader spinner
+        _recipeViewDefault.default.renderSpinner();
+        //Generate necessary data for the specific recipe
+        //by providing the 'id' of that recipe in the following function
+        await _model.loadRecipe(id);
+        _recipeViewDefault.default.render(_model.state.recipe);
+    } catch (error) {
+        console.log(error);
+        _recipeViewDefault.default.renderError(error);
+    }
+};
+const showSearchResults = async function() {
+    try {
+        _resultViewDefault.default.renderSpinner();
+        // 1. Fetching recipe query from user
+        const query = _searchViewDefault.default.fetchQuery();
+        if (!query) return;
+        // 2. Fetching various recipes from the api using the query
+        await _model.searchRecipe(query);
+        // 3 Rendering the results for various recipes
+        console.log(_model.state.search.results);
+        console.log(_model.getSearchResults(1));
+        _resultViewDefault.default.render(_model.getSearchResults());
+        // 4 For Pagination
+        _paginationViewDefault.default.render(_model.state.search);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const controlServing = function name(newServings) {
+    _model.updateServings(newServings);
+    _recipeViewDefault.default.render(_model.state.recipe);
+};
+const controlPagination = function(gotoPage) {
+    // 3 Rendering the results for various recipes
+    _resultViewDefault.default.render(_model.getSearchResults(gotoPage));
+    // 4 For Pagination
+    _paginationViewDefault.default.render(_model.state.search);
+};
+const controlAddBookmark = function() {
+    _model.addBookmark(_model.state.recipe);
+};
+const init = function() {
+    _recipeViewDefault.default.generateHandlerRender(showRecipe);
+    _recipeViewDefault.default.addHandlerUpdateServings(controlServing);
+    _searchViewDefault.default.generateSeachHandler(showSearchResults);
+    _paginationViewDefault.default.addClickevent(controlPagination);
+};
+init();

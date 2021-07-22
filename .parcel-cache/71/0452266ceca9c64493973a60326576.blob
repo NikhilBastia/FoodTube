@@ -1,0 +1,45 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _stable = require("core-js/stable");
+var _runtime = require("regenerator-runtime/runtime");
+var _model = require("./model");
+var _recipeView = require("./views/recipeView");
+var _recipeViewDefault = parcelHelpers.interopDefault(_recipeView);
+var _searchView = require("./views/searchView");
+var _searchViewDefault = parcelHelpers.interopDefault(_searchView);
+const recipeContainer = document.querySelector('.recipe');
+// https://forkify-api.herokuapp.com/v2
+///////////////////////////////////////
+const showRecipe = async function() {
+    try {
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        console.log(id);
+        //Render loader spinner
+        _recipeViewDefault.default.renderSpinner();
+        //Generate necessary data for the specific recipe
+        //by providing the 'id' of that recipe in the following function
+        await _model.loadRecipe(id);
+        _recipeViewDefault.default.render(_model.state.recipe);
+    } catch (error) {
+        console.log(error);
+        _recipeViewDefault.default.renderError(error);
+    }
+};
+const showSearchResults = async function() {
+    try {
+        // 1. Fetching recipe query from user
+        const query = _searchViewDefault.default.fetchQuery();
+        if (!query) return;
+        // 2. Fetching various recipes from the api
+        _model.searchRecipe(query);
+        // 3 Rendering the results for various recipes
+        console.log(_model.state.search.results);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const init = function() {
+    _recipeViewDefault.default.generateHandlerRender(showRecipe);
+    _searchViewDefault.default.generateSeachHandler(showSearchResults);
+};
+init();

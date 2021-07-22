@@ -1,0 +1,45 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _iconsSvg = require("url:../img/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+var _stable = require("core-js/stable");
+var _runtime = require("regenerator-runtime/runtime");
+var _model = require("./model");
+var _recipeView = require("./views/recipeView");
+var _recipeViewDefault = parcelHelpers.interopDefault(_recipeView);
+const recipeContainer = document.querySelector('.recipe');
+const timeout = function(s) {
+    return new Promise(function(_, reject) {
+        setTimeout(function() {
+            reject(new Error(`Request took too long! Timeout after ${s} second`));
+        }, s * 1000);
+    });
+};
+// https://forkify-api.herokuapp.com/v2
+const renderSpinner = function(parentEl) {
+    let markup = `\n        <div class="spinner">\n          <svg>\n            <use href="${_iconsSvgDefault.default}#icon-loader"></use>\n          </svg>\n        </div> \n  `;
+    parentEl.innerHTML = '';
+    parentEl.insertAdjacentHTML('afterbegin', markup);
+};
+///////////////////////////////////////
+const showRecipe = async function() {
+    try {
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        console.log(id);
+        //Render loader spinner
+        renderSpinner(recipeContainer);
+        //Generate necessary data for the specific recipe
+        //by providing the 'id' of that recipe in the following function
+        await _model.loadRecipe(id);
+        // const { recipe } = model.state;
+        _recipeViewDefault.default.render(_model.state.recipe);
+    } catch (error) {
+        console.log(error);
+    }
+};
+[
+    'hashchange',
+    'load'
+].forEach((ev)=>{
+    window.addEventListener(ev, showRecipe);
+});

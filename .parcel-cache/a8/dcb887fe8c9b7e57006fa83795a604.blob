@@ -1,0 +1,16 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentView = require("./parentView");
+var _parentViewDefault = parcelHelpers.interopDefault(_parentView);
+var _iconsSvg = require("url:../../img/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class ResultView extends _parentViewDefault.default {
+    _parentElement = document.querySelector('.results');
+    _generateMarkup() {
+        console.log(`tiger:${this._data}`);
+        return this._data.map(this._generatePreview).join();
+    }
+    _generatePreview() {
+    }
+}
+exports.default = new ResultView();

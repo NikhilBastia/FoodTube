@@ -1,0 +1,62 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "state", ()=>state
+);
+parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe
+);
+parcelHelpers.export(exports, "searchRecipe", ()=>searchRecipe
+);
+parcelHelpers.export(exports, "getSearchResults", ()=>getSearchResults
+);
+var _config = require("./config");
+var _helper = require("./helper");
+const state = {
+    recipe: {
+    },
+    search: {
+        query: '',
+        results: [],
+        page: 1,
+        resultsPerPage: _config.RES_PER_PAGE
+    }
+};
+const loadRecipe = async function(id) {
+    try {
+        const data = await _helper.getJSON(`${_config.API_URL}/${id}`);
+        let { recipe  } = data.data;
+        state.recipe = {
+            id: recipe.id,
+            title: recipe.title,
+            publisher: recipe.publisher,
+            sourceUrl: recipe.source_url,
+            image: recipe.image_url,
+            servings: recipe.servings,
+            cookingTime: recipe.cooking_time,
+            ingredients: recipe.ingredients
+        };
+    } catch (error) {
+        throw error;
+    }
+};
+const searchRecipe = async function(query) {
+    try {
+        const data = await _helper.getJSON(`${_config.API_URL}?search=${query}`);
+        state.search.results = data.data.recipes.map((rec)=>{
+            return {
+                id: rec.id,
+                title: rec.title,
+                publisher: rec.publisher,
+                image: rec.image_url
+            };
+        });
+    } catch (error) {
+        console.error(`search recipe error:${error}`);
+        throw error;
+    }
+};
+const getSearchResults = function(page) {
+    state.search.page = page;
+    const start = (page - 1) * resultsPerPage;
+    const end = page * resultsPerPage;
+    return state.search.results.slice(start, end);
+};

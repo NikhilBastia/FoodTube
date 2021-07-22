@@ -1,0 +1,33 @@
+// TODO: in core-js@4, move /modules/ dependencies to public entries for better optimization by tools like `preset-env`
+var Map1 = require('../modules/es.map');
+var WeakMap1 = require('../modules/es.weak-map');
+var create = require('../internals/object-create');
+var isObject = require('../internals/is-object');
+var Node1 = function() {
+    // keys
+    this.object = null;
+    this.symbol = null;
+    // child nodes
+    this.primitives = null;
+    this.objectsByIndex = create(null);
+};
+Node1.prototype.get = function(key, initializer) {
+    return this[key] || (this[key] = initializer());
+};
+Node1.prototype.next = function(i, it, IS_OBJECT) {
+    var store = IS_OBJECT ? this.objectsByIndex[i] || (this.objectsByIndex[i] = new WeakMap1()) : this.primitives || (this.primitives = new Map1());
+    var entry = store.get(it);
+    if (!entry) store.set(it, entry = new Node1());
+    return entry;
+};
+var root = new Node1();
+module.exports = function() {
+    var active = root;
+    var length = arguments.length;
+    var i, it;
+    // for prevent leaking, start from objects
+    for(i = 0; i < length; i++)if (isObject(it = arguments[i])) active = active.next(i, it, true);
+    if (this === Object && active === root) throw TypeError('Composite keys must contain a non-primitive component');
+    for(i = 0; i < length; i++)if (!isObject(it = arguments[i])) active = active.next(i, it, false);
+    return active;
+};

@@ -1,0 +1,16 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentView = require("./parentView");
+var _parentViewDefault = parcelHelpers.interopDefault(_parentView);
+var _iconsSvg = require("url:../../img/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class PageView extends _parentViewDefault.default {
+    _parentElement = document.querySelector('');
+    _generateMarkup() {
+        const numPage = Math.ceil(this._data.results.length / this._data.resultsPerPage);
+        const currPage = +this._data.page;
+        //First Page
+        if (numPage > 1 && currPage === 1) return `\n        <button class="btn--inline pagination__btn--next">\n          <span>Page ${currPage + 1}</span>\n          <svg class="search__icon">\n            <use href="${_iconsSvgDefault.default}#icon-arrow-right"></use>\n          </svg>\n        </button> \n      `;
+    }
+}
+exports.default = new PageView();

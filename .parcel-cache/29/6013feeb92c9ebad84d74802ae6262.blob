@@ -1,0 +1,22 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentView = require("./parentView");
+var _parentViewDefault = parcelHelpers.interopDefault(_parentView);
+var _iconsSvg = require("url:../../img/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class ResultView extends _parentViewDefault.default {
+    _parentElement = document.querySelector('.results');
+    renderError(error) {
+        const markup = `\n    <div class="error">\n    <div>\n      <svg>\n        <use href="${_iconsSvgDefault.default}#icon-alert-triangle"></use>\n      </svg>\n    </div>\n    <p>${error}</p>\n  </div>\n    `;
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+    _generateMarkup() {
+        console.log(`tiger:${this._data}`);
+        return this._data.map(this._generatePreview).join('');
+    }
+    _generatePreview(res) {
+        return `\n    <li class="preview">\n            <a class="preview__link preview__link" href="${res.id}">\n              <figure class="preview__fig">\n                <img src="${res.image}" alt="Test" />\n              </figure>\n              <div class="preview__data">\n                <h4 class="preview__title">${res.title}</h4>\n                <p class="preview__publisher">${res.publisher}</p>x\n              </div>\n            </a>\n          </li>\n        `;
+    }
+}
+exports.default = new ResultView();

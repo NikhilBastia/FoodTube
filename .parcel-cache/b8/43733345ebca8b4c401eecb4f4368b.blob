@@ -1,0 +1,8 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class ResultView {
+    _generateMarkup() {
+        return `\n    <ul class="results">\n          <li class="preview">\n            <a class="preview__link preview__link--active" href="${this._data.id}">\n              <figure class="preview__fig">\n                <img src="src/img/test-1.jpg" alt="Test" />\n              </figure>\n              <div class="preview__data">${this._data.title}</h4>\n                <p class="preview__publisher">${this._data.publisher}</p>\n                <div class="preview__user-generated">\n                  <svg>\n                    <use href="${icons}#icon-user"></use>\n                  </svg>\n                </div>\n              </div>\n            </a>\n          </li>\n      </ul>\n        `;
+    }
+}
+exports.default = new ResultView();
