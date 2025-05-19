@@ -5,17 +5,16 @@
 
 ## 🌐 Live Demo
 
-[Check out the live site here](https://nikhilbastia.github.io/FoodTube/)
+[Check out the live site here](https://foodtube-nikhil.netlify.app/)
 
 ## 📸 Screenshots
 
 ### 🔍 Search Interface
-![Search Interface](https://raw.githubusercontent.com/NikhilBastia/FoodTube/main/assets/screenshot1.png)
+![Search Interface](https://github.com/NikhilBastia/FoodTube/blob/master/src/img/Project-img1.png)
 
 ### 🍲 Recipe Display with Ingredients and Steps
-![Recipe Details](https://raw.githubusercontent.com/NikhilBastia/FoodTube/main/assets/screenshot2.png)
+![Recipe Details](https://github.com/NikhilBastia/FoodTube/blob/master/src/img/Project-img2.png)
 
-> *(Note: If not already in your repo, upload these screenshots as `assets/screenshot1.png` and `assets/screenshot2.png`.)*
 
 ## 🛠️ Features
 
@@ -28,9 +27,9 @@
 
 ## 🧰 Tech Stack
 
-- **JavaScript** (Vanilla) – 39.9%
-- **SCSS (CSS3)** – 34.6%
-- **HTML5** – 25.5%
+- **JavaScript** (Vanilla) 
+- **SCSS (CSS3)** 
+- **HTML5** 
 
 ## 🚀 Getting Started
 
